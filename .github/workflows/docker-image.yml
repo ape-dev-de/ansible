@@ -44,7 +44,7 @@ jobs:
       run: docker buildx build  --platform linux/i386 -f Dockerfile-${{ matrix.os }}  -t  alexispeters/ansible:${{ matrix.os }}-i386 --output=type=image .
 
     - name: imagetools merge and push
-      run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} alexispeters/ansible:Dockerfile-${{ matrix.os }}-i386 alexispeters/ansible:Dockerfile-${{ matrix.os }}-arm64 alexispeters/ansible:Dockerfile-${{ matrix.os }}-amd64
+      run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} alexispeters/ansible:${{ matrix.os }}-i386 alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
 
     - name: Push to ECR
       run: docker push alexispeters/ansible  -a
