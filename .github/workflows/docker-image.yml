@@ -10,6 +10,14 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os:
+          - alpine
+          - centos
+          - ubuntu
+          - fedora
+
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +27,6 @@ jobs:
         username: alexispeters
         password: ${{secrets.DOCKER_PASSWORD}}
     - name: Docker build
-      run: docker build . -f Dockerfile -t alexispeters/ansible:alpine-$(date +%F) -t alexispeters/ansible:alpine
+      run: docker build . -f Dockerfile-${{ matrix.os }} --platform linux/amd64,linux/arm64,linux/i386 -t alexispeters/ansible:${{ matrix.os }} $(date +%F) -t alexispeters/ansible:${{ matrix.os }}
     - name: Push to ECR
       run: docker push alexispeters/ansible  -a
