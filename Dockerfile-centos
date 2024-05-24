@@ -1,4 +1,4 @@
 FROM centos
 
-RUN yum install --no-cache ansible
+RUN yum install -y ansible
 
