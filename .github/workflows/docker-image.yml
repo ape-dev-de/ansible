@@ -22,7 +22,6 @@ jobs:
         platform:
           - arm64
           - amd64
-          - i386
 
     runs-on: ubuntu-latest
 
@@ -68,4 +67,4 @@ jobs:
 
       - name: imagetools merge and push
         run: docker buildx imagetools create --push -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
-          alexispeters/ansible:${{ matrix.os }}-i386 alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
+          alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
