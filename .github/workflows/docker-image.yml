@@ -21,4 +21,4 @@ jobs:
     - name: Docker build
       run: docker build . -f Dockerfile -t alexispeters/ansible:alpine-$(date +%F) -t alexispeters/ansible:alpine
     - name: Push to ECR
-      run: docker push alexispeters/ansible  -t alexispeters/ansible:alpine-$(date +%F) -t alexispeters/ansible:alpine
+      run: docker push alexispeters/ansible  -a
