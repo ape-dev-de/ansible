@@ -41,7 +41,7 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Docker build and push ${{ matrix.os }}-${{ matrix.platform }}
-        run: docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}}-$(date +%F)  .
+        run: docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${{matrix.platform}} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}}-$(date +%F)  .
 
   merge:
     needs:
