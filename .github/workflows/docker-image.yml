@@ -27,6 +27,6 @@ jobs:
         username: alexispeters
         password: ${{secrets.DOCKER_PASSWORD}}
     - name: Docker build
-      run: docker build . -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }} $(date +%F) -t alexispeters/ansible:${{ matrix.os }}
+      run: docker build . --platform linux/amd64,linux/arm64,linux/i386 -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }}
     - name: Push to ECR
       run: docker push alexispeters/ansible  -a
