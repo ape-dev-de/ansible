@@ -24,16 +24,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: crazy-max/ghaction-setup-docker@v2
-      with:
-        version: v24.0.6
-        daemon-config: |
-          {
-            "features": {
-              "containerd-snapshotter": true
-            }
-          }
-          
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -45,8 +35,16 @@ jobs:
       with:
         username: alexispeters
         password: ${{secrets.DOCKER_PASSWORD}}
-    - name: Docker build
-      run: docker build . --platform linux/amd64,linux/arm64,linux/i386 -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }}
+
+    - name: Docker build amd
+      run: docker buildx build  --platform linux/amd64 -f Dockerfile-${{ matrix.os }}-amd64 .
+    - name: Docker build arm
+      run: docker buildx build  --platform linux/arm64 -f Dockerfile-${{ matrix.os }}-arm64 .
+    - name: Docker build i386
+      run: docker buildx build  --platform linux/i386 -f Dockerfile-${{ matrix.os }}-i386 .
+
+    - name: imagetools merge and push
+      run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t Dockerfile-${{ matrix.os }} Dockerfile-${{ matrix.os }}-i386 Dockerfile-${{ matrix.os }}-arm64 Dockerfile-${{ matrix.os }}-amd64
 
     - name: Push to ECR
       run: docker push alexispeters/ansible  -a
