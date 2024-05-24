@@ -1,6 +1,6 @@
 FROM ubuntu
 
 RUN apt update \
-    && apt install pipx \
+    && apt install -y pipx \
     && pipx ensurepath --global \
     && pipx install --include-deps ansible
