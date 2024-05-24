@@ -19,32 +19,51 @@ jobs:
           - centos
           - ubuntu
           - fedora
+      platform:
+        - arm64
+        - amd64
+        - i386
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - uses: docker/login-action@v3.1.0
-      with:
-        username: alexispeters
-        password: ${{secrets.DOCKER_PASSWORD}}
+      - uses: docker/login-action@v3.1.0
+        with:
+          username: alexispeters
+          password: ${{secrets.DOCKER_PASSWORD}}
 
-    - name: Docker build amd
-      run: docker buildx build  --platform linux/amd64 -f Dockerfile-${{ matrix.os }} -t  alexispeters/ansible:${{ matrix.os }}-amd64 --output=type=image  .
-    - name: Docker build arm
-      run: docker buildx build  --platform linux/arm64 -f Dockerfile-${{ matrix.os }} -t  alexispeters/ansible:${{ matrix.os }}-arm64 --output=type=image  .
-    - name: Docker build i386
-      run: docker buildx build  --platform linux/i386 -f Dockerfile-${{ matrix.os }}  -t  alexispeters/ansible:${{ matrix.os }}-i386 --output=type=image .
+      - name: Docker build and push ${{ matrix.os }}-${{ matrix.platform }}
+        run: docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}}-$(date +%F)  .
 
-    - name: imagetools merge and push
-      run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} alexispeters/ansible:${{ matrix.os }}-i386 alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
+  merge:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - alpine
+          - centos
+          - ubuntu
+          - fedora
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Push to ECR
-      run: docker push alexispeters/ansible  -a
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3.1.0
+        with:
+          username: alexispeters
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: imagetools merge and push
+        run: docker buildx imagetools create --push -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
+          alexispeters/ansible:${{ matrix.os }}-i386 alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
