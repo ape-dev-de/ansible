@@ -19,10 +19,10 @@ jobs:
           - centos
           - ubuntu
           - fedora
-      platform:
-        - arm64
-        - amd64
-        - i386
+        platform:
+          - arm64
+          - amd64
+          - i386
 
     runs-on: ubuntu-latest
 
@@ -44,6 +44,8 @@ jobs:
         run: docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}} -t alexispeters/ansible:${{ matrix.os }}-${{matrix-platform}}-$(date +%F)  .
 
   merge:
+    needs:
+      - build
     runs-on: ubuntu-latest
     strategy:
       matrix:
