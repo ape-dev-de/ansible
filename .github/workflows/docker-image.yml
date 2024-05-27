@@ -66,5 +66,5 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: imagetools merge and push
-        run: docker buildx imagetools create --push -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
+        run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
           alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
