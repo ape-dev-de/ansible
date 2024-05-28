@@ -67,4 +67,4 @@ jobs:
 
       - name: imagetools merge and push
         run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
-          alexispeters/ansible:${{ matrix.os }}-arm64 alexispeters/ansible:${{ matrix.os }}-amd64
+          docker.io/alexispeters/ansible:${{ matrix.os }}-arm64 docker.io/alexispeters/ansible:${{ matrix.os }}-amd64
