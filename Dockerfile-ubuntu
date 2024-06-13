@@ -4,3 +4,5 @@ RUN apt update \
     && apt install -y pipx \
     && pipx ensurepath \
     && pipx install --include-deps ansible
+
+ENV PATH="${PATH}:/root/.local/share/pipx/venvs/ansible/bin/"
