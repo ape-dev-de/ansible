@@ -16,12 +16,13 @@ jobs:
       matrix:
         os:
           - alpine
-          - centos
           - ubuntu
           - fedora
         platform:
           - arm64
           - amd64
+          - arm/v7
+          - arm/v8
 
     runs-on: ubuntu-latest
 
@@ -50,7 +51,6 @@ jobs:
       matrix:
         os:
           - alpine
-          - centos
           - ubuntu
           - fedora
     steps:
@@ -65,6 +65,8 @@ jobs:
           username: alexispeters
           password: ${{secrets.DOCKER_PASSWORD}}
 
+      - name: docker pull 
+        run: docker image pull --all-tags alexispeters/ansible
       - name: imagetools merge and push
         run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
-          docker.io/alexispeters/ansible:${{ matrix.os }}-arm64 docker.io/alexispeters/ansible:${{ matrix.os }}-amd64
+          docker.io/alexispeters/ansible:${{ matrix.os }}-arm64 docker.io/alexispeters/ansible:${{ matrix.os }}-amd64 
