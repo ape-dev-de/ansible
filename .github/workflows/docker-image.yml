@@ -23,6 +23,11 @@ jobs:
           - amd64
           - arm/v7
           - arm/v8
+        exclude:
+         - os: fedora
+           platform: arm/v7
+         - os: fedora
+           platform: arm/v8
 
     runs-on: ubuntu-latest
 
