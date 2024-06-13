@@ -39,12 +39,9 @@ jobs:
         with:
           username: alexispeters
           password: ${{secrets.DOCKER_PASSWORD}}
-
-      - name: set tag name
-        run: PLATFORM="${{matrix.platform}}" && export TAG_NAME="${PLATFORM/\//-}" && echo $TAG_NAME
       
       - name: Docker build and push ${{ matrix.os }}-${{ matrix.platform }}
-        run: docker buildx build --push  --platform linux/${TAG_NAME} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${TAG_NAME} -t alexispeters/ansible:${{ matrix.os }}-${TAG_NAME}-$(date +%F)  .
+        run:  PLATFORM="${{matrix.platform}}" && export TAG_NAME="${PLATFORM/\//-}"  && docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${TAG_NAME} -t alexispeters/ansible:${{ matrix.os }}-${TAG_NAME}-$(date +%F)  .
 
   merge:
     needs:
