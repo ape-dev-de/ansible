@@ -40,6 +40,9 @@ jobs:
           username: alexispeters
           password: ${{secrets.DOCKER_PASSWORD}}
 
+      - name: set tag name
+        run: export TAG_NAME="${matrix.platform////-}" && echo $TAG_NAME
+      
       - name: Docker build and push ${{ matrix.os }}-${{ matrix.platform }}
         run: docker buildx build --push  --platform linux/${{ matrix.platform }} -f Dockerfile-${{ matrix.os }} -t alexispeters/ansible:${{ matrix.os }}-${{matrix.platform}} -t alexispeters/ansible:${{ matrix.os }}-${{matrix.platform}}-$(date +%F)  .
 
