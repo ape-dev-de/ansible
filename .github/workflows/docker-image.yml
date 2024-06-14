@@ -56,12 +56,6 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os:
-          - alpine
-          - ubuntu
-          - fedora
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -76,6 +70,15 @@ jobs:
 
       - name: docker pull 
         run: docker image pull --all-tags alexispeters/ansible
-      - name: imagetools merge and push
-        run: docker buildx imagetools create -t alexispeters/ansible:${{ matrix.os }}-$(date +%F) -t alexispeters/ansible:${{ matrix.os }} \
-          docker.io/alexispeters/ansible:${{ matrix.os }}-arm64 docker.io/alexispeters/ansible:${{ matrix.os }}-amd64 
+        
+      - name: imagetools merge and push alpine
+        run: docker buildx imagetools create -t alexispeters/ansible:alpine-$(date +%F) -t alexispeters/ansible:alpine -t alexispeters/ansible:latest \
+          docker.io/alexispeters/ansible:alpine-arm64 docker.io/alexispeters/ansible:alpine-amd64 docker.io/alexispeters/ansible:alpine-arm-v8 docker.io/alexispeters/ansible:alpine-arm-v7 
+
+      - name: imagetools merge and push ubuntu
+        run: docker buildx imagetools create -t alexispeters/ansible:ubuntu-$(date +%F) -t alexispeters/ansible:ubuntu \
+          docker.io/alexispeters/ansible:ubuntu-arm64 docker.io/alexispeters/ansible:ubuntu-amd64
+
+      - name: imagetools merge and push fedora
+        run: docker buildx imagetools create -t alexispeters/ansible:fedora-$(date +%F) -t alexispeters/ansible:fedora \
+          docker.io/alexispeters/ansible:fedora-arm64 docker.io/alexispeters/ansible:fedora-amd64
