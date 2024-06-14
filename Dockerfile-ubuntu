@@ -1,7 +1,7 @@
 FROM ubuntu
 
 RUN apt update \
-    && apt install -y pipx \
+    && apt install -y pipx openssh \
     && pipx ensurepath \
     && pipx install --include-deps ansible
 
