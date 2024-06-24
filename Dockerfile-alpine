@@ -1,5 +1,4 @@
 FROM alpine
 
-ARG ANSIBLE_VERSION="<2.17.0"
-RUN apk add --no-cache 'ansible-core<2.17.0'  openssh
+RUN apk add --no-cache ansible-core-2.17.0-r0 ansible  openssh
 
