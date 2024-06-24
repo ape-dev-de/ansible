@@ -1,4 +1,5 @@
 FROM alpine
 
-RUN apk add --no-cache ansible
+ARG ANSIBLE_VERSION="2.17.1"
+RUN apk add --no-cache ansible=$ANSIBLE_VERSION
 

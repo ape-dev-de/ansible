@@ -1,5 +1,7 @@
 FROM ubuntu
 
+ARG ANSIBLE_VERSION="2.17.1"
+
 RUN apt update \
     && apt install -y pipx \
     && pipx ensurepath \

@@ -1,4 +1,6 @@
 FROM fedora
 
+ARG ANSIBLE_VERSION="2.17.1"
+
 RUN yum install -y ansible
 

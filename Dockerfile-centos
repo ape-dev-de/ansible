@@ -1,5 +1,7 @@
 FROM centos
 
+ARG ANSIBLE_VERSION="2.17.1"
+
 RUN yum --disablerepo '*' -y --enablerepo extras swap centos-linux-repos centos-stream-repos && \
      yum distro-sync -y
 
