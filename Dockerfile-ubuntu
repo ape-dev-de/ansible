@@ -3,6 +3,8 @@ FROM ubuntu
 ARG ANSIBLE_VERSION="2.17.1"
 
 RUN apt update \
-    && apt install -y pipx \
+    && apt install -y pipx ssh \
     && pipx ensurepath \
     && pipx install --include-deps ansible
+
+ENV PATH="${PATH}:/root/.local/share/pipx/venvs/ansible/bin/"

@@ -1,5 +1,5 @@
 FROM alpine
 
 ARG ANSIBLE_VERSION="2.17.1"
-RUN apk add --no-cache ansible=$ANSIBLE_VERSION
+RUN apk add --no-cache ansible=$ANSIBLE_VERSION  openssh
 
